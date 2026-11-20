@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "PuntKlik",
+  "version": "3.3.0",
+  "description": "Tik je punt tevoorschijn, verzamel coins en kies je versiering.",
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.smartschool.be/*"
+      ],
+      "js": [
+        "skins.js",
+        "content.js"
+      ],
+      "css": [
+        "styles.css"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "logo.svg"
+      ],
+      "matches": [
+        "https://*.smartschool.be/*"
+      ]
+    }
+  ],
+  "action": {
+    "default_title": "PuntKlik",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}
