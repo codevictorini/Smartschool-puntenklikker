@@ -1,0 +1,41 @@
+name: Discord push notification
+
+on:
+  push:
+
+permissions: {}
+
+jobs:
+  notify:
+    if: github.event.deleted != true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send push notification
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          REPOSITORY: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+          ACTOR: ${{ github.actor }}
+          COMMIT_URL: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
+            echo "::error::Set the DISCORD_WEBHOOK_URL repository secret."
+            exit 1
+          fi
+
+          payload="$(jq -n \
+            --arg repository "$REPOSITORY" \
+            --arg branch "$BRANCH" \
+            --arg actor "$ACTOR" \
+            --arg commit_url "$COMMIT_URL" \
+            '{
+              content: ("PuntKlik update gepusht\nRepository: " + $repository +
+                "\nBranch: " + $branch + "\nDoor: " + $actor + "\n" + $commit_url),
+              allowed_mentions: { parse: [] }
+            }')"
+
+          curl --fail --silent --show-error \
+            --retry 3 --retry-all-errors --max-time 20 \
+            --header "Content-Type: application/json" \
+            --data "$payload" \
+            "$DISCORD_WEBHOOK_URL"
