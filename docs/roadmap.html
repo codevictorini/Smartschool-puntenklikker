@@ -11,42 +11,43 @@
   <header class="wrap site-header">
     <a class="brand" href="index.html" aria-label="PuntKlik">
       <img src="assets/logo.svg" alt="">
-      <strong>PuntKlik</strong>
+      <strong data-site-content="brand.name" data-site-label="Naam in de navigatie">PuntKlik</strong>
     </a>
     <nav class="site-toolbar" aria-label="Website">
-      <a class="page-link" href="index.html">Home</a>
-      <a class="page-link" href="download.html">Download</a>
-      <a class="page-link" href="roadmap.html" aria-current="page">Roadmap</a>
-      <a class="page-link" href="about.html">About us</a>
-      <a class="page-link" href="privacy.html">Privacy</a>
-      <a class="page-link" href="contact.html">Contact</a>
-      <a class="github-link" href="https://github.com/codevictorini/Smartschool-puntenklikker" target="_blank" rel="noopener noreferrer">
+      <a class="page-link" href="index.html" data-site-link="link.nav.home" data-site-label="Link navigatie: Home"><span data-site-content="nav.home" data-site-label="Navigatietekst: Home">Home</span></a>
+      <a class="page-link" href="download.html" data-site-link="link.nav.download" data-site-label="Link navigatie: Download"><span data-site-content="nav.download" data-site-label="Navigatietekst: Download">Download</span></a>
+      <a class="page-link" href="roadmap.html" data-site-link="link.nav.roadmap" data-site-label="Link navigatie: Roadmap" aria-current="page"><span data-site-content="nav.roadmap" data-site-label="Navigatietekst: Roadmap">Roadmap</span></a>
+      <a class="page-link" href="about.html" data-site-link="link.nav.about" data-site-label="Link navigatie: About us"><span data-site-content="nav.about" data-site-label="Navigatietekst: About us">About us</span></a>
+      <a class="page-link" href="privacy.html" data-site-link="link.nav.privacy" data-site-label="Link navigatie: Privacy"><span data-site-content="nav.privacy" data-site-label="Navigatietekst: Privacy">Privacy</span></a>
+      <a class="page-link" href="contact.html" data-site-link="link.nav.contact" data-site-label="Link navigatie: Contact"><span data-site-content="nav.contact" data-site-label="Navigatietekst: Contact">Contact</span></a>
+      <a class="page-link" href="owner.html" data-site-link="link.nav.owner" data-site-label="Link navigatie: Ownerpanel"><span data-site-content="nav.owner" data-site-label="Navigatietekst: Ownerpanel">Ownerpanel</span></a>
+      <a class="github-link" href="https://github.com/codevictorini/Smartschool-puntenklikker" data-site-link="link.github" data-site-label="GitHub-link" target="_blank" rel="noopener noreferrer">
         <img class="github-icon" src="assets/github.svg" alt="">
-        <span>GitHub</span>
+        <span data-site-content="nav.github" data-site-label="GitHub-knoptekst">GitHub</span>
       </a>
-      <a class="discord-link" href="https://discord.gg/R5K48S3Ufj" target="_blank" rel="noopener noreferrer" aria-label="Open de PuntKlik Discord-server">
+      <a class="discord-link" href="https://discord.gg/tkq7xkgW3z" data-site-link="link.discord" data-site-label="Discord-link" target="_blank" rel="noopener noreferrer" aria-label="Open de PuntKlik Discord-server">
         <img class="discord-icon" src="assets/discord.svg" alt="">
       </a>
     </nav>
   </header>
 
   <main class="wrap">
-    <h1>Roadmap en community</h1>
-    <p class="intro">Bekijk wat er gepland is voor PuntKlik en ontdek de top van het leaderboard.</p>
+    <h1 data-site-content="roadmap.title" data-site-label="Roadmap: titel">Roadmap en community</h1>
+    <p class="intro" data-site-content="roadmap.intro" data-site-label="Roadmap: introductie">Bekijk wat er gepland is voor PuntKlik en ontdek de top van het leaderboard.</p>
 
     <section class="community-section" aria-labelledby="roadmap-title">
-      <h2 id="roadmap-title">Roadmap</h2>
-      <p class="community-note">De roadmap wordt door de PuntKlik-owner bijgewerkt.</p>
+      <h2 id="roadmap-title" data-site-content="roadmap.section.title" data-site-label="Roadmap: sectiekop">Roadmap</h2>
+      <p class="community-note" data-site-content="roadmap.section.note" data-site-label="Roadmap: toelichting">De roadmap wordt door de PuntKlik-owner bijgewerkt.</p>
       <p class="community-status" id="roadmap-status" role="status" aria-live="polite">Roadmap laden…</p>
       <ol class="roadmap-list" id="roadmap-list"></ol>
     </section>
 
     <section class="community-section" aria-labelledby="leaderboard-title">
-      <h2 id="leaderboard-title">Leaderboard</h2>
+      <h2 id="leaderboard-title" data-site-content="roadmap.leaderboard.title" data-site-label="Roadmap: leaderboardkop">Leaderboard</h2>
       <p class="community-note" id="leaderboard-login-hint">Log in met Google om de top 10 te bekijken en je nickname te beheren.</p>
       <div class="community-actions">
-        <button class="community-button" id="site-login" type="button">Inloggen met Google</button>
-        <button class="community-button secondary" id="site-logout" type="button" hidden>Uitloggen</button>
+        <button class="community-button" id="site-login" type="button" data-site-content="owner.login">Inloggen met Google</button>
+        <button class="community-button secondary" id="site-logout" type="button" hidden data-site-content="owner.logout">Uitloggen</button>
       </div>
       <form class="nickname-form" id="nickname-form" hidden>
         <label for="leaderboard-nickname">Jouw nickname (3–20 tekens)
@@ -58,10 +59,10 @@
       <ol class="website-leaderboard-list" id="leaderboard-list" aria-label="Top 10 spelers"></ol>
     </section>
 
-    <p class="community-note" id="owner-login-hint">Ownerbeheer verschijnt wanneer de PuntKlik-owner is ingelogd.</p>
+    <p class="community-note" id="owner-login-hint" data-site-content="roadmap.owner.hint" data-site-label="Roadmap: ownerlogin-tekst">Ownerbeheer verschijnt wanneer de PuntKlik-owner is ingelogd.</p>
     <section class="community-section" id="owner-panel" aria-labelledby="owner-title" hidden>
-      <h2 id="owner-title">Ownerpanel · roadmap beheren</h2>
-      <p class="community-note">Wijzigingen worden direct op de website gepubliceerd.</p>
+      <h2 id="owner-title" data-site-content="roadmap.owner.title" data-site-label="Roadmap: ownerpanel-kop">Ownerpanel · roadmap beheren</h2>
+      <p class="community-note" data-site-content="roadmap.owner.note" data-site-label="Roadmap: ownerpanel-uitleg">Wijzigingen worden direct op de website gepubliceerd.</p>
       <form class="roadmap-form" id="roadmap-form">
         <label for="roadmap-title-input">Titel
           <input id="roadmap-title-input" type="text" minlength="2" maxlength="100" required>
@@ -90,10 +91,11 @@
   </main>
 
   <footer class="wrap site-footer">
-    <a href="index.html">Terug naar PuntKlik</a>
+    <a href="index.html" data-site-link="link.nav.home" data-site-label="Footer: Home-link" data-site-content="footer.back-home">Terug naar PuntKlik</a>
   </footer>
   <script src="supabase-config.js"></script>
   <script src="site-auth.js"></script>
+  <script src="site-content.js"></script>
   <script src="roadmap.js"></script>
 </body>
 </html>

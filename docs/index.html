@@ -131,91 +131,95 @@
   <header class="wrap site-header">
     <a class="brand" href="index.html" aria-label="PuntKlik">
       <img src="assets/logo.svg" alt="">
-      <strong>PuntKlik</strong>
+      <strong data-site-content="brand.name" data-site-label="Naam in de navigatie">PuntKlik</strong>
     </a>
     <nav class="site-toolbar" aria-label="Website">
-      <a class="page-link" href="index.html" aria-current="page">Home</a>
-      <a class="page-link" href="download.html">Download</a>
-      <a class="page-link" href="roadmap.html">Roadmap</a>
-      <a class="page-link" href="about.html">About us</a>
-      <a class="page-link" href="privacy.html">Privacy</a>
-      <a class="page-link" href="contact.html">Contact</a>
-      <a class="github-link" href="https://github.com/codevictorini/Smartschool-puntenklikker" target="_blank" rel="noopener noreferrer" aria-label="Open de GitHub-repository van de extensie en website">
+      <a class="page-link" href="index.html" data-site-link="link.nav.home" data-site-label="Link navigatie: Home" aria-current="page"><span data-site-content="nav.home" data-site-label="Navigatietekst: Home">Home</span></a>
+      <a class="page-link" href="download.html" data-site-link="link.nav.download" data-site-label="Link navigatie: Download"><span data-site-content="nav.download" data-site-label="Navigatietekst: Download">Download</span></a>
+      <a class="page-link" href="roadmap.html" data-site-link="link.nav.roadmap" data-site-label="Link navigatie: Roadmap"><span data-site-content="nav.roadmap" data-site-label="Navigatietekst: Roadmap">Roadmap</span></a>
+      <a class="page-link" href="about.html" data-site-link="link.nav.about" data-site-label="Link navigatie: About us"><span data-site-content="nav.about" data-site-label="Navigatietekst: About us">About us</span></a>
+      <a class="page-link" href="privacy.html" data-site-link="link.nav.privacy" data-site-label="Link navigatie: Privacy"><span data-site-content="nav.privacy" data-site-label="Navigatietekst: Privacy">Privacy</span></a>
+      <a class="page-link" href="contact.html" data-site-link="link.nav.contact" data-site-label="Link navigatie: Contact"><span data-site-content="nav.contact" data-site-label="Navigatietekst: Contact">Contact</span></a>
+      <a class="page-link" href="owner.html" data-site-link="link.nav.owner" data-site-label="Link navigatie: Ownerpanel"><span data-site-content="nav.owner" data-site-label="Navigatietekst: Ownerpanel">Ownerpanel</span></a>
+      <a class="github-link" href="https://github.com/codevictorini/Smartschool-puntenklikker" data-site-link="link.github" data-site-label="GitHub-link" target="_blank" rel="noopener noreferrer" aria-label="Open de GitHub-repository van de extensie en website">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-      <span>GitHub</span>
+      <span data-site-content="nav.github" data-site-label="GitHub-knoptekst">GitHub</span>
       </a>
-      <a class="discord-link" href="https://discord.gg/R5K48S3Ufj" target="_blank" rel="noopener noreferrer" aria-label="Open de PuntKlik Discord-server" title="Discord">
+      <a class="discord-link" href="https://discord.gg/tkq7xkgW3z" data-site-link="link.discord" data-site-label="Discord-link" target="_blank" rel="noopener noreferrer" aria-label="Open de PuntKlik Discord-server" title="Discord">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.069 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
       </a>
     </nav>
   </header>
 
   <main class="wrap">
-    <h1>Een minigame voor je Smartschool-punten</h1>
-    <p class="intro">PuntKlik verstopt een punt op ondersteunde resultatenpagina's. Klik erop, tik op de figuur en onthul je score.</p>
-    <p class="credit">Gemaakt door de one and only Victorini.</p>
+    <h1 data-site-content="home.title" data-site-label="Home: hoofdtitel">Een minigame voor je Smartschool-punten</h1>
+    <p class="intro" data-site-content="home.intro" data-site-label="Home: introductie">PuntKlik verstopt een punt op ondersteunde resultatenpagina's. Klik erop, tik op de figuur en onthul je score.</p>
+    <p class="credit" data-site-content="home.credit" data-site-label="Home: makerstekst">Gemaakt door de one and only Victorini.</p>
 
-    <h2>Zo werkt het</h2>
+    <h2 data-site-content="home.how.title" data-site-label="Home: stappen-titel">Zo werkt het</h2>
     <ol>
-      <li>Open in Smartschool <strong>Ga naar</strong> en kies <strong>Resultaten</strong>.</li>
-      <li>Klik op een punt dat PuntKlik heeft verstopt.</li>
-      <li>Tik het ingestelde aantal keer op de figuur. Daarna zie je je punt en verdien je coins.</li>
-      <li>Open de extensie-popup om figuren en toppings te kiezen.</li>
+      <li><span data-site-content="home.how.step1.start" data-site-label="Stap 1 (begin)">Open in Smartschool </span><strong data-site-content="home.how.step1.menu" data-site-label="Stap 1 (menu)">Ga naar</strong><span data-site-content="home.how.step1.end" data-site-label="Stap 1 (einde)"> en kies </span><strong data-site-content="home.how.step1.destination" data-site-label="Stap 1 (pagina)">Resultaten</strong><span>.</span></li>
+      <li data-site-content="home.how.step2" data-site-label="Stap 2">Klik op een punt dat PuntKlik heeft verstopt.</li>
+      <li data-site-content="home.how.step3" data-site-label="Stap 3">Tik het ingestelde aantal keer op de figuur. Daarna zie je je punt en verdien je coins.</li>
+      <li data-site-content="home.how.step4" data-site-label="Stap 4">Open de extensie-popup om figuren en toppings te kiezen.</li>
     </ol>
 
-    <h2>Voorbeeld van een punt</h2>
-    <p class="note">Dit is een voorbeeld, geen echt Smartschool-resultaat. Stel dat je punt 8/10 is:</p>
+    <h2 data-site-content="home.example.title" data-site-label="Home: voorbeeldtitel">Voorbeeld van een punt</h2>
+    <p class="note" data-site-content="home.example.note" data-site-label="Home: voorbeeldtoelichting">Dit is een voorbeeld, geen echt Smartschool-resultaat. Stel dat je punt 8/10 is:</p>
     <div class="example-grid">
       <article class="example-card">
-        <h3>1. Punt verborgen</h3>
+        <h3 data-site-content="home.example.card1.title" data-site-label="Voorbeeldkaart 1: titel">1. Punt verborgen</h3>
         <div class="locked-point"><img src="assets/logo.svg" alt="PuntKlik-logo"></div>
-        <p>Je ziet het PuntKlik-logo in plaats van 8/10.</p>
+        <p data-site-content="home.example.card1.body" data-site-label="Voorbeeldkaart 1: tekst">Je ziet het PuntKlik-logo in plaats van 8/10.</p>
       </article>
       <article class="example-card">
-        <h3>2. Minigame</h3>
+        <h3 data-site-content="home.example.card2.title" data-site-label="Voorbeeldkaart 2: titel">2. Minigame</h3>
         <div class="game-preview">
           <div class="figure" aria-hidden="true">🍪</div>
           <strong>5 van de 12 tikken</strong>
           <div class="progress" aria-hidden="true"><span></span></div>
         </div>
-        <p>Tik op de figuur tot de teller vol is. Het aantal tikken kun je aanpassen.</p>
+        <p data-site-content="home.example.card2.body" data-site-label="Voorbeeldkaart 2: tekst">Tik op de figuur tot de teller vol is. Het aantal tikken kun je aanpassen.</p>
       </article>
       <article class="example-card">
-        <h3>3. Punt onthuld</h3>
+        <h3 data-site-content="home.example.card3.title" data-site-label="Voorbeeldkaart 3: titel">3. Punt onthuld</h3>
         <div class="result-point">
           <strong>8/10</strong>
           <span>Rare · +5 coins</span>
         </div>
-        <p>8/10 is 80% en valt in de categorie Rare.</p>
+        <p data-site-content="home.example.card3.body" data-site-label="Voorbeeldkaart 3: tekst">8/10 is 80% en valt in de categorie Rare.</p>
       </article>
     </div>
 
-    <h2>Coinbeloningen</h2>
+    <h2 data-site-content="home.rewards.title" data-site-label="Home: coinbeloningen-titel">Coinbeloningen</h2>
     <table>
       <thead><tr><th>Percentage</th><th>Zeldzaamheid</th><th>Coins</th></tr></thead>
       <tbody>
-        <tr><td>0–49%</td><td>Common</td><td>1</td></tr>
-        <tr><td>50–69%</td><td>Uncommon</td><td>3</td></tr>
-        <tr><td>70–84%</td><td>Rare</td><td>5</td></tr>
-        <tr><td>85–94%</td><td>Epic</td><td>8</td></tr>
-        <tr><td>95–99%</td><td>Legendary</td><td>12</td></tr>
-        <tr><td>100%</td><td>Mythic</td><td>20</td></tr>
+        <tr><td data-site-content="home.rewards.common.range" data-site-label="Beloning Common: percentage">0–49%</td><td data-site-content="home.rewards.common.name" data-site-label="Beloning Common: naam">Common</td><td data-site-content="home.rewards.common.coins" data-site-label="Beloning Common: coins">1</td></tr>
+        <tr><td data-site-content="home.rewards.uncommon.range" data-site-label="Beloning Uncommon: percentage">50–69%</td><td data-site-content="home.rewards.uncommon.name" data-site-label="Beloning Uncommon: naam">Uncommon</td><td data-site-content="home.rewards.uncommon.coins" data-site-label="Beloning Uncommon: coins">3</td></tr>
+        <tr><td data-site-content="home.rewards.rare.range" data-site-label="Beloning Rare: percentage">70–84%</td><td data-site-content="home.rewards.rare.name" data-site-label="Beloning Rare: naam">Rare</td><td data-site-content="home.rewards.rare.coins" data-site-label="Beloning Rare: coins">5</td></tr>
+        <tr><td data-site-content="home.rewards.epic.range" data-site-label="Beloning Epic: percentage">85–94%</td><td data-site-content="home.rewards.epic.name" data-site-label="Beloning Epic: naam">Epic</td><td data-site-content="home.rewards.epic.coins" data-site-label="Beloning Epic: coins">8</td></tr>
+        <tr><td data-site-content="home.rewards.legendary.range" data-site-label="Beloning Legendary: percentage">95–99%</td><td data-site-content="home.rewards.legendary.name" data-site-label="Beloning Legendary: naam">Legendary</td><td data-site-content="home.rewards.legendary.coins" data-site-label="Beloning Legendary: coins">12</td></tr>
+        <tr><td data-site-content="home.rewards.mythic.range" data-site-label="Beloning Mythic: percentage">100%</td><td data-site-content="home.rewards.mythic.name" data-site-label="Beloning Mythic: naam">Mythic</td><td data-site-content="home.rewards.mythic.coins" data-site-label="Beloning Mythic: coins">20</td></tr>
       </tbody>
     </table>
-    <p>Met coins koop je figuren en toppings. Sprinkles geven bijvoorbeeld +10% coinbonus, chocoladesaus +25% en goudstof +50%.</p>
+    <p data-site-content="home.rewards.description" data-site-label="Home: uitleg coinbeloningen">Met coins koop je figuren en toppings. Sprinkles geven bijvoorbeeld +10% coinbonus, chocoladesaus +25% en goudstof +50%.</p>
 
-    <h2>Installeren in Chrome</h2>
+    <h2 data-site-content="home.install.title" data-site-label="Home: installatiekop">Installeren in Chrome</h2>
     <ol>
-      <li><a href="download.html">Download PuntKlik</a> en pak het ZIP-bestand uit.</li>
-      <li>Open <code>chrome://extensions</code> en zet Ontwikkelaarsmodus aan.</li>
-      <li>Klik op Uitgepakte extensie laden en selecteer de uitgepakte map waar <code>manifest.json</code> in staat.</li>
-      <li>Open Smartschool en ga naar je resultaten.</li>
+      <li><a href="download.html" data-site-link="link.install.download" data-site-label="Installatiestap: downloadlink"><span data-site-content="home.install.step1.link" data-site-label="Installatiestap 1: linktekst">Download PuntKlik</span></a><span data-site-content="home.install.step1.end" data-site-label="Installatiestap 1: tekst"> en pak het ZIP-bestand uit.</span></li>
+      <li><span data-site-content="home.install.step2.start" data-site-label="Installatiestap 2 (begin)">Open </span><code>chrome://extensions</code><span data-site-content="home.install.step2.end" data-site-label="Installatiestap 2 (einde)"> en zet Ontwikkelaarsmodus aan.</span></li>
+      <li><span data-site-content="home.install.step3.start" data-site-label="Installatiestap 3 (begin)">Klik op </span><strong data-site-content="home.install.step3.button" data-site-label="Installatiestap 3 (knop)">Uitgepakte extensie laden</strong><span data-site-content="home.install.step3.middle" data-site-label="Installatiestap 3 (midden)"> en selecteer de uitgepakte map waar </span><code>manifest.json</code><span data-site-content="home.install.step3.end" data-site-label="Installatiestap 3 (einde)"> in staat.</span></li>
+      <li data-site-content="home.install.step4" data-site-label="Installatiestap 4">Open Smartschool en ga naar je resultaten.</li>
     </ol>
 
   </main>
 
   <footer>
-    <div class="wrap">Vragen of feedback? <a href="contact.html">Neem contact op</a> of <a href="https://discord.gg/R5K48S3Ufj" target="_blank" rel="noopener noreferrer">kom naar Discord</a>.</div>
+    <div class="wrap"><span data-site-content="footer.home.start" data-site-label="Footer: begintekst">Vragen of feedback? </span><a href="contact.html" data-site-link="link.footer.contact" data-site-label="Footer: contactlink" data-site-content="footer.home.contact">Neem contact op</a><span data-site-content="footer.home.middle" data-site-label="Footer: verbindingswoord"> of </span><a href="https://discord.gg/tkq7xkgW3z" data-site-link="link.discord" data-site-label="Footer: Discord-link" target="_blank" rel="noopener noreferrer" data-site-content="footer.home.discord">kom naar Discord</a>.</div>
   </footer>
+  <script src="supabase-config.js"></script>
+  <script src="site-auth.js"></script>
+  <script src="site-content.js"></script>
 </body>
 </html>

@@ -11,39 +11,43 @@
   <header class="wrap site-header">
     <a class="brand" href="index.html" aria-label="PuntKlik">
       <img src="assets/logo.svg" alt="">
-      <strong>PuntKlik</strong>
+      <strong data-site-content="brand.name" data-site-label="Naam in de navigatie">PuntKlik</strong>
     </a>
     <nav class="site-toolbar" aria-label="Website">
-      <a class="page-link" href="index.html">Home</a>
-      <a class="page-link" href="download.html">Download</a>
-      <a class="page-link" href="roadmap.html">Roadmap</a>
-      <a class="page-link" href="about.html">About us</a>
-      <a class="page-link" href="privacy.html" aria-current="page">Privacy</a>
-      <a class="page-link" href="contact.html">Contact</a>
-      <a class="github-link" href="https://github.com/codevictorini/Smartschool-puntenklikker" target="_blank" rel="noopener noreferrer">
+      <a class="page-link" href="index.html" data-site-link="link.nav.home" data-site-label="Link navigatie: Home"><span data-site-content="nav.home" data-site-label="Navigatietekst: Home">Home</span></a>
+      <a class="page-link" href="download.html" data-site-link="link.nav.download" data-site-label="Link navigatie: Download"><span data-site-content="nav.download" data-site-label="Navigatietekst: Download">Download</span></a>
+      <a class="page-link" href="roadmap.html" data-site-link="link.nav.roadmap" data-site-label="Link navigatie: Roadmap"><span data-site-content="nav.roadmap" data-site-label="Navigatietekst: Roadmap">Roadmap</span></a>
+      <a class="page-link" href="about.html" data-site-link="link.nav.about" data-site-label="Link navigatie: About us"><span data-site-content="nav.about" data-site-label="Navigatietekst: About us">About us</span></a>
+      <a class="page-link" href="privacy.html" data-site-link="link.nav.privacy" data-site-label="Link navigatie: Privacy" aria-current="page"><span data-site-content="nav.privacy" data-site-label="Navigatietekst: Privacy">Privacy</span></a>
+      <a class="page-link" href="contact.html" data-site-link="link.nav.contact" data-site-label="Link navigatie: Contact"><span data-site-content="nav.contact" data-site-label="Navigatietekst: Contact">Contact</span></a>
+      <a class="page-link" href="owner.html" data-site-link="link.nav.owner" data-site-label="Link navigatie: Ownerpanel"><span data-site-content="nav.owner" data-site-label="Navigatietekst: Ownerpanel">Ownerpanel</span></a>
+      <a class="github-link" href="https://github.com/codevictorini/Smartschool-puntenklikker" data-site-link="link.github" data-site-label="GitHub-link" target="_blank" rel="noopener noreferrer">
         <img class="github-icon" src="assets/github.svg" alt="">
-        <span>GitHub</span>
+        <span data-site-content="nav.github" data-site-label="GitHub-knoptekst">GitHub</span>
       </a>
-      <a class="discord-link" href="https://discord.gg/R5K48S3Ufj" target="_blank" rel="noopener noreferrer" aria-label="Open de PuntKlik Discord-server">
+      <a class="discord-link" href="https://discord.gg/tkq7xkgW3z" data-site-link="link.discord" data-site-label="Discord-link" target="_blank" rel="noopener noreferrer" aria-label="Open de PuntKlik Discord-server">
         <img class="discord-icon" src="assets/discord.svg" alt="">
       </a>
     </nav>
   </header>
 
   <main class="wrap">
-    <h1>Privacy</h1>
-    <p>PuntKlik gebruikt alleen cijfers die al zichtbaar zijn op de geopende Smartschool-resultatenpagina. De extensie haalt geen verborgen cijfers op en gebruikt geen Smartschool-API.</p>
-    <h2>About us</h2>
-    <p>Op de About us-pagina zijn de namen, rollen en korte biografieën van het team openbaar. De PuntKlik-owner beheert deze informatie.</p>
-    <h2>Extensiegegevens</h2>
-    <p>Spelvoortgang, instellingen, coins en gekochte figuren worden lokaal in je browser bewaard. Als je het leaderboard in de extensie of op de website gebruikt, worden je nickname en coinstand met Supabase gedeeld. Op de website is het leaderboard alleen na Google-login zichtbaar; je e-mailadres wordt niet openbaar getoond.</p>
-    <h2>Contactformulier</h2>
-    <p>Als je ons contactformulier gebruikt, worden je naam en bericht doorgestuurd naar de eigenaar via Discord. Deze website bewaart de inhoud van je bericht niet. Voor misbruikpreventie bewaart Supabase tijdelijk een gehashte netwerkidentificatie; bij een volgende contactaanvraag worden hashes ouder dan 24 uur opgeruimd.</p>
-    <p>Vragen over privacy? <a href="contact.html">Neem contact op</a>.</p>
+    <h1 data-site-content="privacy.title" data-site-label="Privacy: titel">Privacy</h1>
+    <p data-site-content="privacy.intro" data-site-label="Privacy: introductie">PuntKlik gebruikt alleen cijfers die al zichtbaar zijn op de geopende Smartschool-resultatenpagina. De extensie haalt geen verborgen cijfers op en gebruikt geen Smartschool-API.</p>
+    <h2 data-site-content="privacy.about.title" data-site-label="Privacy: kop About us">About us</h2>
+    <p data-site-content="privacy.about.body" data-site-label="Privacy: About us-tekst">Op de About us-pagina zijn de namen, rollen en korte biografieën van het team openbaar. De PuntKlik-owner beheert deze informatie.</p>
+    <h2 data-site-content="privacy.extension.title" data-site-label="Privacy: kop extensiegegevens">Extensiegegevens</h2>
+    <p data-site-content="privacy.extension.body" data-site-label="Privacy: extensiegegevens">Spelvoortgang, instellingen, coins en gekochte figuren worden lokaal in je browser bewaard. Als je het leaderboard in de extensie of op de website gebruikt, worden je nickname en coinstand met Supabase gedeeld. Op de website is het leaderboard alleen na Google-login zichtbaar; je e-mailadres wordt niet openbaar getoond.</p>
+    <h2 data-site-content="privacy.contact.title" data-site-label="Privacy: kop contactformulier">Contactformulier</h2>
+    <p data-site-content="privacy.contact.body" data-site-label="Privacy: contactformuliertekst">Als je ons contactformulier gebruikt, worden je naam en bericht doorgestuurd naar de eigenaar via Discord. Deze website bewaart de inhoud van je bericht niet. Voor misbruikpreventie bewaart Supabase tijdelijk een gehashte netwerkidentificatie; bij een volgende contactaanvraag worden hashes ouder dan 24 uur opgeruimd.</p>
+    <p><span data-site-content="privacy.questions" data-site-label="Privacy: vragen over privacy">Vragen over privacy? </span><a href="contact.html" data-site-link="link.contact" data-site-label="Contactlink" data-site-content="privacy.contact-link">Neem contact op</a>.</p>
   </main>
 
   <footer class="wrap site-footer">
-    Vragen of feedback? <a href="contact.html">Neem contact op</a>.
+    <span data-site-content="footer.questions" data-site-label="Footer: vragen">Vragen of feedback? </span><a href="contact.html" data-site-link="link.contact" data-site-label="Footer: contactlink" data-site-content="footer.contact">Neem contact op</a>.
   </footer>
+  <script src="supabase-config.js"></script>
+  <script src="site-auth.js"></script>
+  <script src="site-content.js"></script>
 </body>
 </html>
