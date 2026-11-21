@@ -668,14 +668,19 @@
   }
 
   function keysFor(element) {
-    const info = infoFromGroups([element]);
+    const groups = [element, ...(element._peers || [])];
+    const info = infoFromGroups(groups);
     if (!info) return [];
     const rounded = new Set([
       Math.floor(info.percent),
       Math.round(info.percent),
       Math.ceil(info.percent),
     ]);
-    return [...rounded].map((value) => `${value}|${contextOf(element)}`);
+    const contexts = [...new Set(groups.map(contextOf).filter(Boolean))];
+    if (!contexts.length) contexts.push('');
+    return [...new Set(contexts.flatMap((context) =>
+      [...rounded].map((value) => `${value}|${context}`)
+    ))];
   }
 
   function isRevealed(element) {
