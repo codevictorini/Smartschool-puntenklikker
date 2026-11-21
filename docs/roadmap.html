@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bekijk de PuntKlik-roadmap en het leaderboard.">
+  <title>Roadmap en leaderboard - PuntKlik</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="wrap site-header">
+    <a class="brand" href="index.html" aria-label="PuntKlik">
+      <img src="assets/logo.svg" alt="">
+      <strong>PuntKlik</strong>
+    </a>
+    <nav class="site-toolbar" aria-label="Website">
+      <a class="page-link" href="index.html">Home</a>
+      <a class="page-link" href="download.html">Download</a>
+      <a class="page-link" href="roadmap.html" aria-current="page">Roadmap</a>
+      <a class="page-link" href="privacy.html">Privacy</a>
+      <a class="page-link" href="contact.html">Contact</a>
+      <a class="github-link" href="https://github.com/codevictorini/Smartschool-puntenklikker" target="_blank" rel="noopener noreferrer">
+        <img class="github-icon" src="assets/github.svg" alt="">
+        <span>GitHub</span>
+      </a>
+      <a class="discord-link" href="https://discord.gg/R5K48S3Ufj" target="_blank" rel="noopener noreferrer" aria-label="Open de PuntKlik Discord-server">
+        <img class="discord-icon" src="assets/discord.svg" alt="">
+      </a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <h1>Roadmap en community</h1>
+    <p class="intro">Bekijk wat er gepland is voor PuntKlik en ontdek de top van het leaderboard.</p>
+
+    <section class="community-section" aria-labelledby="roadmap-title">
+      <h2 id="roadmap-title">Roadmap</h2>
+      <p class="community-note">De roadmap wordt door de PuntKlik-owner bijgewerkt.</p>
+      <p class="community-status" id="roadmap-status" role="status" aria-live="polite">Roadmap laden…</p>
+      <ol class="roadmap-list" id="roadmap-list"></ol>
+    </section>
+
+    <section class="community-section" aria-labelledby="leaderboard-title">
+      <h2 id="leaderboard-title">Leaderboard</h2>
+      <p class="community-note" id="leaderboard-login-hint">Log in met Google om de top 10 te bekijken en je nickname te beheren.</p>
+      <div class="community-actions">
+        <button class="community-button" id="site-login" type="button">Inloggen met Google</button>
+        <button class="community-button secondary" id="site-logout" type="button" hidden>Uitloggen</button>
+      </div>
+      <form class="nickname-form" id="nickname-form" hidden>
+        <label for="leaderboard-nickname">Jouw nickname (3–20 tekens)
+          <input id="leaderboard-nickname" type="text" minlength="3" maxlength="20" autocomplete="nickname" required>
+        </label>
+        <button class="community-button" type="submit">Nickname opslaan</button>
+      </form>
+      <p class="community-status" id="leaderboard-status" role="status" aria-live="polite"></p>
+      <ol class="website-leaderboard-list" id="leaderboard-list" aria-label="Top 10 spelers"></ol>
+    </section>
+
+    <p class="community-note" id="owner-login-hint">Ownerbeheer verschijnt wanneer de PuntKlik-owner is ingelogd.</p>
+    <section class="community-section" id="owner-panel" aria-labelledby="owner-title" hidden>
+      <h2 id="owner-title">Ownerpanel · roadmap beheren</h2>
+      <p class="community-note">Wijzigingen worden direct op de website gepubliceerd.</p>
+      <form class="roadmap-form" id="roadmap-form">
+        <label for="roadmap-title-input">Titel
+          <input id="roadmap-title-input" type="text" minlength="2" maxlength="100" required>
+        </label>
+        <label for="roadmap-description-input">Beschrijving
+          <textarea id="roadmap-description-input" maxlength="600"></textarea>
+        </label>
+        <label for="roadmap-status-input">Status
+          <select id="roadmap-status-input" required>
+            <option value="planned">Gepland</option>
+            <option value="in_progress">Bezig</option>
+            <option value="done">Afgerond</option>
+          </select>
+        </label>
+        <label for="roadmap-order-input">Volgorde
+          <input id="roadmap-order-input" type="number" min="0" max="10000" step="1" value="10" required>
+        </label>
+        <div class="community-actions">
+          <button class="community-button" id="roadmap-save" type="submit">Item toevoegen</button>
+          <button class="community-button secondary" id="roadmap-cancel" type="button" hidden>Annuleren</button>
+        </div>
+      </form>
+      <p class="community-status" id="owner-status" role="status" aria-live="polite"></p>
+      <ol class="roadmap-manage-list" id="roadmap-manage-list" aria-label="Roadmap-items beheren"></ol>
+    </section>
+  </main>
+
+  <footer class="wrap site-footer">
+    <a href="index.html">Terug naar PuntKlik</a>
+  </footer>
+  <script src="supabase-config.js"></script>
+  <script src="roadmap.js"></script>
+</body>
+</html>
