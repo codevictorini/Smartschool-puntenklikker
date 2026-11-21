@@ -1,10 +1,7 @@
 (() => {
   'use strict';
 
-  const config = window.PuntKlikSupabase;
-  const supabaseUrl = config && typeof config.url === 'string' ? config.url.replace(/\/+$/, '') : '';
-  const sessionKey = 'puntklikWebsiteAuthSession';
-  const verifierKey = 'puntklikWebsitePkceVerifier';
+  const siteAuth = window.PuntKlikSiteAuth;
   const statusLabels = {
     planned: 'Gepland',
     in_progress: 'Bezig',
@@ -40,172 +37,6 @@
   function setStatus(element, message, isError) {
     element.textContent = message;
     element.classList.toggle('roadmap-error', Boolean(isError));
-  }
-
-  function ensureConfiguration() {
-    if (
-      !supabaseUrl ||
-      !config.publishableKey ||
-      supabaseUrl.includes('YOUR_') ||
-      config.publishableKey.startsWith('YOUR_')
-    ) {
-      throw new Error('De Supabase-configuratie ontbreekt.');
-    }
-  }
-
-  async function supabaseRequest(path, options) {
-    ensureConfiguration();
-    const requestOptions = options || {};
-    const headers = new Headers(requestOptions.headers || {});
-    headers.set('apikey', config.publishableKey);
-    if (requestOptions.session) {
-      headers.set('Authorization', `Bearer ${requestOptions.session.accessToken}`);
-    }
-    if (requestOptions.body !== undefined) headers.set('Content-Type', 'application/json');
-
-    const response = await fetch(`${supabaseUrl}${path}`, {
-      method: requestOptions.method || 'GET',
-      headers,
-      body: requestOptions.body === undefined ? undefined : JSON.stringify(requestOptions.body),
-    });
-    const responseText = await response.text();
-    let data = null;
-    if (responseText) {
-      try {
-        data = JSON.parse(responseText);
-      } catch {
-        throw new Error('Supabase gaf een onleesbaar antwoord.');
-      }
-    }
-    if (!response.ok) {
-      const detail = data && (data.message || data.msg || data.error_description || data.error);
-      throw new Error(detail || `Supabase-verzoek mislukt (${response.status}).`);
-    }
-    return data;
-  }
-
-  function encodeBase64Url(bytes) {
-    let binary = '';
-    bytes.forEach((byte) => {
-      binary += String.fromCharCode(byte);
-    });
-    return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-  }
-
-  async function createCodeChallenge(verifier) {
-    const encoded = new TextEncoder().encode(verifier);
-    const digest = await crypto.subtle.digest('SHA-256', encoded);
-    return encodeBase64Url(new Uint8Array(digest));
-  }
-
-  async function startGoogleLogin() {
-    ensureConfiguration();
-    if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-      throw new Error('Google-login werkt via de gepubliceerde HTTPS-website.');
-    }
-    const verifier = encodeBase64Url(crypto.getRandomValues(new Uint8Array(32)));
-    sessionStorage.setItem(verifierKey, verifier);
-    const authorizationUrl = new URL(`${supabaseUrl}/auth/v1/authorize`);
-    authorizationUrl.searchParams.set('provider', 'google');
-    authorizationUrl.searchParams.set('redirect_to', `${location.origin}${location.pathname}`);
-    authorizationUrl.searchParams.set('code_challenge', await createCodeChallenge(verifier));
-    authorizationUrl.searchParams.set('code_challenge_method', 's256');
-    location.assign(authorizationUrl.toString());
-  }
-
-  function saveSession(data) {
-    if (!data || !data.access_token || !data.refresh_token || !data.user || !data.user.id) {
-      throw new Error('Supabase heeft geen geldige gebruikerssessie teruggegeven.');
-    }
-    const expiresIn = Number(data.expires_in);
-    session = {
-      accessToken: data.access_token,
-      refreshToken: data.refresh_token,
-      expiresAt: Date.now() + (Number.isFinite(expiresIn) && expiresIn > 0 ? expiresIn : 3600) * 1000,
-      userId: data.user.id,
-    };
-    localStorage.setItem(sessionKey, JSON.stringify(session));
-    return session;
-  }
-
-  function clearOAuthParameters() {
-    const url = new URL(location.href);
-    ['code', 'error', 'error_description', 'error_code', 'state'].forEach((key) => url.searchParams.delete(key));
-    history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
-  }
-
-  async function finishGoogleLogin() {
-    const url = new URL(location.href);
-    const code = url.searchParams.get('code');
-    const authError = url.searchParams.get('error_description') || url.searchParams.get('error');
-    if (!code && !authError) return;
-    clearOAuthParameters();
-    if (authError) {
-      sessionStorage.removeItem(verifierKey);
-      throw new Error(authError);
-    }
-
-    const verifier = sessionStorage.getItem(verifierKey);
-    if (!verifier) throw new Error('De tijdelijke loginverificatie is verlopen. Log opnieuw in.');
-    try {
-      const data = await supabaseRequest('/auth/v1/token?grant_type=pkce', {
-        method: 'POST',
-        body: { auth_code: code, code_verifier: verifier },
-      });
-      saveSession(data);
-    } finally {
-      sessionStorage.removeItem(verifierKey);
-    }
-  }
-
-  function readSession() {
-    const stored = localStorage.getItem(sessionKey);
-    if (!stored) return null;
-    let value;
-    try {
-      value = JSON.parse(stored);
-    } catch {
-      localStorage.removeItem(sessionKey);
-      throw new Error('De opgeslagen login is beschadigd. Log opnieuw in.');
-    }
-    if (
-      !value ||
-      typeof value.accessToken !== 'string' ||
-      typeof value.refreshToken !== 'string' ||
-      typeof value.userId !== 'string' ||
-      !Number.isFinite(Number(value.expiresAt))
-    ) {
-      localStorage.removeItem(sessionKey);
-      throw new Error('De opgeslagen login is ongeldig. Log opnieuw in.');
-    }
-    return value;
-  }
-
-  async function restoreSession() {
-    let stored = readSession();
-    if (!stored) return null;
-    if (Number(stored.expiresAt) <= Date.now() + 60000) {
-      const refreshed = await supabaseRequest('/auth/v1/token?grant_type=refresh_token', {
-        method: 'POST',
-        body: { refresh_token: stored.refreshToken },
-      });
-      stored = saveSession(refreshed);
-    }
-    const user = await supabaseRequest('/auth/v1/user', { session: stored });
-    if (!user || user.id !== stored.userId) {
-      throw new Error('De opgeslagen login hoort niet bij deze gebruiker. Log opnieuw in.');
-    }
-    return stored;
-  }
-
-  async function checkOwnerAccess(activeSession) {
-    const result = await supabaseRequest('/rest/v1/rpc/is_puntklik_leaderboard_owner', {
-      method: 'POST',
-      session: activeSession,
-      body: {},
-    });
-    if (typeof result !== 'boolean') throw new Error('Ownerrechten konden niet worden gecontroleerd.');
-    return result;
   }
 
   function updateAuthControls() {
@@ -253,11 +84,11 @@
     setStatus(leaderboardStatus, 'Leaderboard laden…', false);
     const userId = encodeURIComponent(session.userId);
     const [topRows, ownRows] = await Promise.all([
-      supabaseRequest(
+      siteAuth.request(
         '/rest/v1/leaderboard?select=nickname,coins&nickname=not.is.null&order=coins.desc,nickname.asc&limit=10',
         { session }
       ),
-      supabaseRequest(
+      siteAuth.request(
         `/rest/v1/leaderboard?select=user_id,nickname,coins&user_id=eq.${userId}&limit=1`,
         { session }
       ),
@@ -361,7 +192,7 @@
   }
 
   async function refreshRoadmap() {
-    const items = await supabaseRequest(
+    const items = await siteAuth.request(
       '/rest/v1/roadmap_items?select=id,title,description,status,sort_order,created_at&order=sort_order.asc,created_at.asc'
     );
     if (!Array.isArray(items)) throw new Error('Supabase gaf geen geldige roadmap terug.');
@@ -379,7 +210,7 @@
     button.disabled = true;
     setStatus(ownerStatus, 'Roadmap-item verwijderen…', false);
     try {
-      await supabaseRequest(`/rest/v1/roadmap_items?id=eq.${encodeURIComponent(item.id)}`, {
+      await siteAuth.request(`/rest/v1/roadmap_items?id=eq.${encodeURIComponent(item.id)}`, {
         method: 'DELETE',
         session,
       });
@@ -443,13 +274,13 @@
     };
     try {
       if (editingId) {
-        await supabaseRequest(`/rest/v1/roadmap_items?id=eq.${encodeURIComponent(editingId)}`, {
+        await siteAuth.request(`/rest/v1/roadmap_items?id=eq.${encodeURIComponent(editingId)}`, {
           method: 'PATCH',
           session,
           body: item,
         });
       } else {
-        await supabaseRequest('/rest/v1/roadmap_items', {
+        await siteAuth.request('/rest/v1/roadmap_items', {
           method: 'POST',
           session,
           body: { ...item, created_by: session.userId },
@@ -480,12 +311,12 @@
     setStatus(leaderboardStatus, 'Nickname opslaan…', false);
     try {
       if (accountEntry) {
-        await supabaseRequest(
+        await siteAuth.request(
           `/rest/v1/leaderboard?user_id=eq.${encodeURIComponent(session.userId)}`,
           { method: 'PATCH', session, body: { nickname } }
         );
       } else {
-        await supabaseRequest('/rest/v1/leaderboard', {
+        await siteAuth.request('/rest/v1/leaderboard', {
           method: 'POST',
           session,
           body: { user_id: session.userId, nickname, coins: 0 },
@@ -505,9 +336,8 @@
     loginButton.disabled = true;
     setStatus(leaderboardStatus, 'Google-login openen…', false);
     try {
-      await startGoogleLogin();
+      await siteAuth.login();
     } catch (error) {
-      sessionStorage.removeItem(verifierKey);
       console.error('Google-login kon niet worden gestart.', error);
       setStatus(leaderboardStatus, `Inloggen mislukt: ${error.message}`, true);
       loginButton.disabled = false;
@@ -519,8 +349,7 @@
     logoutButton.disabled = true;
     setStatus(leaderboardStatus, 'Uitloggen…', false);
     try {
-      await supabaseRequest('/auth/v1/logout', { method: 'POST', session });
-      localStorage.removeItem(sessionKey);
+      await siteAuth.logout(session);
       session = null;
       isOwner = false;
       accountEntry = null;
@@ -555,9 +384,8 @@
     }
 
     try {
-      await finishGoogleLogin();
-      session = await restoreSession();
-      isOwner = session ? await checkOwnerAccess(session) : false;
+      session = await siteAuth.initialize();
+      isOwner = session ? await siteAuth.isOwner(session) : false;
       updateAuthControls();
       if (isOwner) renderOwnerRoadmap();
     } catch (error) {
