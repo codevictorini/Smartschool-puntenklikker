@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PuntKlik - Figurenwinkel</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      --paper: #fff7e9;
+      --ink: #382b21;
+      --accent: #a5553c;
+      width: 360px;
+      max-height: 640px;
+      overflow-y: auto;
+      margin: 0;
+      padding: 16px;
+      padding-bottom: 58px;
+      background: var(--paper);
+      color: var(--ink);
+      font: 13px/1.4 "Trebuchet MS", system-ui, sans-serif;
+    }
+    body[data-decoration="berry"] { --paper: #fff0f2; --ink: #542c3c; --accent: #c04f78; }
+    body[data-decoration="mint"] { --paper: #effaf2; --ink: #24463a; --accent: #3f8668; }
+    body[data-decoration="night"] { --paper: #292c3b; --ink: #f4e8d2; --accent: #f0b55c; }
+    body[data-decoration="watermelon"] { --paper: #f2fae9; --ink: #264b37; --accent: #d65359; }
+    body[data-decoration="orange"] { --paper: #fff5e8; --ink: #583823; --accent: #d87129; }
+    body[data-decoration="donut"] { --paper: #fff0f5; --ink: #572e47; --accent: #be5681; }
+    body[data-decoration="cupcake"] { --paper: #f5f0ff; --ink: #3d3458; --accent: #8162b4; }
+    header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    header img { width: 40px; height: 40px; }
+    .discord-link {
+      margin-left: auto;
+      padding: 6px 9px;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .discord-link:hover { background: rgb(255 255 255 / 55%); }
+    .discord-link:focus-visible { outline: 2px dashed var(--accent); outline-offset: 2px; }
+    h1 { margin: 0; font-size: 19px; line-height: 1.15; }
+    h2 { margin: 17px 0 3px; font-size: 15px; }
+    p { margin: 3px 0 0; }
+    .popup-credit {
+      margin: -4px 0 10px;
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .tagline, .hint, .status, .message { color: var(--accent); font-size: 12px; }
+    .bar, .coin-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      background: rgb(255 255 255 / 55%);
+    }
+    .bar { margin-bottom: 8px; }
+    .coin-card { margin-bottom: 8px; }
+    .coin-card strong { color: var(--accent); font-size: 16px; }
+    .status { min-height: 18px; margin: 4px 2px 8px; }
+    .settings-link, .store-item button {
+      padding: 7px 9px;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--ink);
+      font: 700 12px "Trebuchet MS", sans-serif;
+      cursor: pointer;
+    }
+    .settings-link:hover, .store-item button:hover:not(:disabled) { background: rgb(255 255 255 / 55%); }
+    .settings-link:focus-visible, .store-item button:focus-visible { outline: 2px dashed var(--accent); outline-offset: 2px; }
+    .settings-link:disabled, .store-item button:disabled { cursor: default; opacity: .6; }
+    .shop-list { display: grid; gap: 6px; margin-top: 8px; }
+    .store-item {
+      display: grid;
+      grid-template-columns: 40px 1fr auto;
+      align-items: center;
+      gap: 8px;
+      min-height: 58px;
+      padding: 7px 8px;
+      border: 1px solid rgb(128 103 76 / 36%);
+      border-radius: 9px;
+      background: rgb(255 255 255 / 42%);
+    }
+    .item-icon { width: 38px; height: 38px; }
+    .item-icon svg { display: block; width: 100%; height: 100%; }
+    .item-name { display: block; font-weight: 700; }
+    .item-note { display: block; color: var(--accent); font-size: 11px; }
+    .store-item button.active { background: var(--accent); color: var(--paper); }
+    .boost-total {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgb(255 255 255 / 55%);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .leaderboard {
+      margin-top: 17px;
+      padding: 12px;
+      border: 1px solid #d5bd9e;
+      border-radius: 10px;
+      background: #fff9ee;
+      color: #382b21;
+    }
+    .leaderboard h2 { margin-top: 0; }
+    .leaderboard button {
+      padding: 7px 9px;
+      border: 1px solid #a5553c;
+      border-radius: 8px;
+      background: #fff;
+      color: #382b21;
+      font: 700 12px "Trebuchet MS", sans-serif;
+      cursor: pointer;
+    }
+    .leaderboard button:disabled { cursor: default; opacity: .6; }
+    .leaderboard button:focus-visible { outline: 2px dashed #a5553c; outline-offset: 2px; }
+    .leaderboard-actions { display: flex; gap: 8px; margin-top: 8px; }
+    .nickname-form { display: grid; gap: 7px; margin-top: 10px; }
+    .nickname-form input {
+      min-width: 0;
+      padding: 7px 8px;
+      border: 1px solid #bca88f;
+      border-radius: 7px;
+      color: #382b21;
+      font: inherit;
+    }
+    .leaderboard-status { min-height: 18px; color: #8c4a34; font-size: 11px; }
+    .leaderboard-list { display: grid; gap: 5px; margin: 8px 0 0; padding: 0; list-style: none; }
+    .leaderboard-row {
+      display: grid;
+      grid-template-columns: 24px 1fr auto;
+      gap: 7px;
+      padding: 6px 7px;
+      border-radius: 6px;
+      background: #f2e8d8;
+    }
+    .leaderboard-rank { color: #8c4a34; font-weight: 700; }
+    .leaderboard-coins { font-weight: 700; white-space: nowrap; }
+    .leaderboard-empty { padding: 8px 0; color: #705f4d; font-size: 12px; }
+    .promo-banner {
+      margin: 8px 0;
+      padding: 9px;
+      border: 1px solid #d5bd9e;
+      border-radius: 8px;
+      background: #fff1c7;
+      color: #755019;
+      font-weight: 700;
+    }
+    .promo-banner[hidden], #secret-shop-section[hidden] { display: none; }
+    .event-fields[hidden], #global-announcement[hidden] { display: none; }
+    .owner-event-countdown[hidden] { display: none; }
+    .owner-event-countdown {
+      margin: 8px 0;
+      padding: 10px;
+      border: 1px solid #d5bd9e;
+      border-radius: 9px;
+      background: #fff1c7;
+      color: #755019;
+      text-align: center;
+    }
+    .owner-event-countdown strong, .owner-event-countdown span { display: block; }
+    .owner-event-countdown strong { font-size: 15px; }
+    .owner-event-countdown span { margin-top: 3px; font-size: 12px; }
+    .global-announcement {
+      position: fixed;
+      z-index: 30;
+      top: 8px;
+      left: 8px;
+      width: calc(100vw - 32px);
+      padding: 10px;
+      border: 1px solid #8c4a34;
+      border-radius: 8px;
+      background: #fff1c7;
+      color: #382b21;
+      box-shadow: 0 3px 14px rgb(56 43 33 / 25%);
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+    .promo-badge {
+      display: inline-block;
+      margin-left: 5px;
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: #e4a927;
+      color: #382b21;
+      font: 700 9px/1.3 "Trebuchet MS", sans-serif;
+      vertical-align: 1px;
+    }
+    .secret-shop-item, .owner-secret-item {
+      display: grid;
+      grid-template-columns: 32px 1fr auto;
+      align-items: center;
+      gap: 7px;
+      padding: 8px;
+      border-radius: 7px;
+      background: #f2e8d8;
+    }
+    .secret-shop-emoji { font-size: 22px; }
+    .secret-shop-copy { min-width: 0; }
+    .secret-shop-copy strong, .secret-shop-copy small { display: block; overflow-wrap: anywhere; }
+    .secret-shop-copy small { color: #705f4d; font-size: 10px; }
+    .secret-shop-price { white-space: nowrap; }
+    .owner-form { display: grid; gap: 7px; margin: 8px 0; }
+    .owner-fruit-controls {
+      margin: 10px 0;
+      padding: 9px;
+      border: 1px solid #d5bd9e;
+      border-radius: 8px;
+      background: #fff1c7;
+    }
+    .owner-fruit-controls[hidden] { display: none; }
+    .owner-fruit-controls h4, .owner-fruit-controls p { margin: 0 0 7px; }
+    .owner-fruit-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 7px; }
+    .owner-form label { display: grid; gap: 3px; font-size: 11px; }
+    .owner-form input, .owner-form select, .owner-form textarea {
+      min-width: 0;
+      padding: 6px;
+      border: 1px solid #bca88f;
+      border-radius: 5px;
+      color: #382b21;
+      font: inherit;
+    }
+    .owner-form textarea { resize: vertical; }
+    .owner-form button, .owner-secret-item button { padding: 6px 8px; }
+    .secret-effect-fields[hidden] { display: none; }
+    .owner-tools h3 { margin: 12px 0 4px; font-size: 13px; }
+    .owner-tools p { font-size: 11px; }
+    .owner-tools { margin-top: 12px; padding-top: 10px; border-top: 1px solid #d5bd9e; }
+    .owner-management { display: grid; gap: 7px; margin-top: 8px; }
+    .owner-tools[hidden], .owner-management[hidden] { display: none; }
+    .owner-player {
+      display: grid;
+      gap: 6px;
+      padding: 8px;
+      border-radius: 7px;
+      background: #f2e8d8;
+    }
+    .owner-player label { display: grid; gap: 3px; font-size: 11px; }
+    .owner-player input { min-width: 0; padding: 5px; border: 1px solid #bca88f; border-radius: 5px; }
+    .owner-player-id { overflow-wrap: anywhere; color: #705f4d; font-size: 9px; }
+    .owner-status { min-height: 16px; color: #8c4a34; font-size: 11px; }
+    .events-widget {
+      position: fixed;
+      z-index: 20;
+      bottom: 8px;
+      left: 8px;
+    }
+    .events-trigger {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      border: 1px solid #8c4a34;
+      border-radius: 7px;
+      background: #fff1c7;
+      color: #755019;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .events-trigger:focus-visible { outline: 2px dashed #8c4a34; outline-offset: 2px; }
+    .events-panel {
+      position: absolute;
+      bottom: 42px;
+      left: 0;
+      display: none;
+      width: 300px;
+      max-width: calc(100vw - 24px);
+      max-height: 260px;
+      overflow-y: auto;
+      padding: 10px;
+      border: 1px solid #bca88f;
+      border-radius: 9px;
+      background: #fff9ee;
+      box-shadow: 0 3px 14px rgb(56 43 33 / 25%);
+    }
+    .events-widget:hover .events-panel,
+    .events-widget:focus-within .events-panel,
+    .events-widget.is-open .events-panel { display: block; }
+    .events-panel h2 { margin: 0 0 7px; }
+    .events-list { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+    .event-row { padding: 7px; border-radius: 6px; background: #f2e8d8; }
+    .event-row strong, .event-row small { display: block; overflow-wrap: anywhere; }
+    .event-row small { margin-top: 2px; color: #705f4d; font-size: 10px; }
+    body[data-decoration="night"] .store-item { background: rgb(255 255 255 / 8%); }
+  </style>
+</head>
+<body>
+  <p class="popup-credit">deze minigame is gemaakt door de one and only victorini</p>
+  <header>
+    <img src="logo.svg" alt="">
+    <div>
+      <h1>Figurenwinkel</h1>
+      <p class="tagline">Kies je figuur en toppings.</p>
+    </div>
+    <a class="discord-link" href="https://discord.gg/R5K48S3Ufj" target="_blank" rel="noopener noreferrer">Discord</a>
+  </header>
+  <div class="coin-card"><span>Mijn coins</span><strong><span id="coins">0</span> ◉</strong></div>
+  <p class="promo-banner" id="promo-banner" role="status" aria-live="polite" hidden></p>
+  <section class="owner-event-countdown" id="owner-event-countdown" aria-label="Aftellen naar het owner-event" hidden>
+    <strong id="owner-event-name-display"></strong>
+    <span id="owner-event-timer"></span>
+    <span id="owner-event-target"></span>
+  </section>
+  <aside class="global-announcement" id="global-announcement" role="alert" aria-live="assertive" hidden></aside>
+  <div class="bar">
+    <span id="status" role="status" aria-live="polite">Laden…</span>
+    <button class="settings-link" id="settings" type="button">Instellingen</button>
+  </div>
+  <p class="message" id="message" role="status" aria-live="polite"></p>
+  <section aria-labelledby="figure-title">
+    <h2 id="figure-title">Klikfiguren</h2>
+    <p class="hint">Je gekozen figuur vervangt de koek.</p>
+    <div class="shop-list" id="figures"></div>
+  </section>
+  <section aria-labelledby="topping-title">
+    <h2 id="topping-title">Toppings</h2>
+    <p class="hint">Koop ze met coins, zet ze aan en stapel de geldbonus.</p>
+    <div class="shop-list" id="toppings"></div>
+    <p class="boost-total" id="boost-total">Actieve bonus: +0% coins</p>
+  </section>
+  <section id="secret-shop-section" aria-labelledby="secret-shop-title" hidden>
+    <h2 id="secret-shop-title">Secret shop</h2>
+    <p class="hint" id="secret-shop-status"></p>
+    <div class="shop-list" id="secret-shop-list"></div>
+    <h3>Jouw geheime items</h3>
+    <div class="shop-list" id="secret-inventory"></div>
+  </section>
+  <section class="leaderboard" aria-labelledby="leaderboard-title">
+    <h2 id="leaderboard-title">Leaderboard</h2>
+    <p>Top 10 coins. Alleen je nickname en coinstand worden gedeeld; je e-mail niet.</p>
+    <div class="leaderboard-actions">
+      <button id="leaderboard-login" type="button">Inloggen met Google</button>
+      <button id="leaderboard-logout" type="button" hidden>Uitloggen</button>
+    </div>
+    <form class="nickname-form" id="nickname-form" hidden>
+      <label for="leaderboard-nickname">Kies een nickname (3–20 tekens)</label>
+      <input id="leaderboard-nickname" type="text" minlength="3" maxlength="20" autocomplete="nickname" required>
+      <button type="submit">Opslaan en deelnemen</button>
+    </form>
+    <p class="leaderboard-status" id="leaderboard-status" role="status" aria-live="polite"></p>
+    <ol class="leaderboard-list" id="leaderboard-list" aria-label="Top 10 spelers"></ol>
+    <div class="owner-tools" id="owner-tools" hidden>
+      <button id="owner-manage-toggle" type="button">Ownerbeheer</button>
+      <div class="owner-management" id="owner-management" hidden>
+        <h3>Owner-event counter instellen</h3>
+        <form class="owner-form" id="owner-event-countdown-form">
+          <label for="owner-event-name-input">Naam van het event</label>
+          <input id="owner-event-name-input" type="text" minlength="1" maxlength="60" required>
+          <label for="owner-event-at-input">Startdatum en -tijd</label>
+          <input id="owner-event-at-input" type="datetime-local" required>
+          <button type="submit">Counter instellen</button>
+          <button id="owner-event-countdown-clear" type="button">Counter wissen</button>
+        </form>
+        <p class="owner-status" id="owner-event-countdown-status" role="status" aria-live="polite"></p>
+        <h3>Promo-event starten</h3>
+        <form class="owner-form" id="promo-form">
+          <label for="promo-percent">Korting (%)</label>
+          <input id="promo-percent" type="number" min="1" max="100" value="20" required>
+          <label for="promo-duration">Duur (minuten)</label>
+          <input id="promo-duration" type="number" min="1" max="1440" value="5" required>
+          <p>Iedere speler krijgt korting, maximaal 5 coins per item.</p>
+          <button type="submit">Promo starten</button>
+        </form>
+        <p class="owner-status" id="promo-owner-status" role="status" aria-live="polite"></p>
+        <h3>Nieuw event starten</h3>
+        <form class="owner-form" id="store-event-form">
+          <label for="store-event-type">Eventsoort</label>
+          <select id="store-event-type">
+            <option value="double_coins">Dubbele coins</option>
+            <option value="coin_gift">Coinbonus per speler</option>
+            <option value="coin_shower">Muntjesregen</option>
+            <option value="flash_sale">Flash sale</option>
+            <option value="lucky_drop">Lucky drop</option>
+            <option value="points_challenge">Puntenchallenge</option>
+            <option value="theme">Thema-event</option>
+          </select>
+          <label for="store-event-duration">Duur (minuten)</label>
+          <input id="store-event-duration" type="number" min="1" max="1440" value="5" required>
+          <div class="event-fields" id="event-fields-coin-gift" hidden>
+            <label for="coin-gift-amount">Coins voor elke speler met een account</label>
+            <input id="coin-gift-amount" type="number" min="1" max="1000000" value="10">
+          </div>
+          <div class="event-fields" id="event-fields-coin-shower" hidden>
+            <label for="coin-shower-amount">Coins per aangeklikt muntzakje</label>
+            <input id="coin-shower-amount" type="number" min="1" max="1000000" value="10">
+          </div>
+          <div class="event-fields" id="event-fields-flash-sale" hidden>
+            <label for="flash-sale-item">Winkelitem</label>
+            <select id="flash-sale-item">
+              <option value="figure:berry">Aardbei</option>
+              <option value="figure:mint">Muntblaadje</option>
+              <option value="figure:night">Ster</option>
+              <option value="figure:watermelon">Watermeloen</option>
+              <option value="figure:orange">Sinaasappel</option>
+              <option value="figure:donut">Donut</option>
+              <option value="figure:cupcake">Cupcake</option>
+              <option value="topping:sprinkles">Regenboogsprinkles</option>
+              <option value="topping:chocolate">Chocoladesaus</option>
+              <option value="topping:gold">Goudstof</option>
+            </select>
+            <label for="flash-sale-percent">Korting (%)</label>
+            <input id="flash-sale-percent" type="number" min="1" max="100" value="50">
+          </div>
+          <div class="event-fields" id="event-fields-lucky-drop" hidden>
+            <label for="lucky-drop-chance">Kans per punt (%)</label>
+            <input id="lucky-drop-chance" type="number" min="1" max="100" value="10">
+            <label for="lucky-drop-reward">Extra coins per lucky drop</label>
+            <input id="lucky-drop-reward" type="number" min="1" max="1000000" value="5">
+          </div>
+          <div class="event-fields" id="event-fields-points-challenge" hidden>
+            <label for="challenge-target">Unieke punten per speler</label>
+            <input id="challenge-target" type="number" min="1" max="1000" value="5">
+            <label for="challenge-reward">Coinbeloning</label>
+            <input id="challenge-reward" type="number" min="1" max="1000000" value="25">
+          </div>
+          <div class="event-fields" id="event-fields-theme" hidden>
+            <label for="theme-event-theme">Tijdelijk thema</label>
+            <select id="theme-event-theme">
+              <option value="berry">Aardbei</option>
+              <option value="mint">Munt</option>
+              <option value="night">Nacht</option>
+              <option value="watermelon">Watermeloen</option>
+              <option value="orange">Sinaasappel</option>
+              <option value="donut">Donut</option>
+              <option value="cupcake">Cupcake</option>
+            </select>
+          </div>
+          <button type="submit">Event starten</button>
+        </form>
+        <p class="owner-status" id="store-event-status" role="status" aria-live="polite"></p>
+        <div class="owner-fruit-controls" id="owner-fruit-controls" hidden></div>
+        <h3>Global announcement</h3>
+        <form class="owner-form" id="announcement-form">
+          <label for="announcement-name">Naam</label>
+          <input id="announcement-name" type="text" minlength="1" maxlength="30" value="Victorerauw" required>
+          <label for="announcement-message">Bericht</label>
+          <textarea id="announcement-message" rows="4" minlength="1" maxlength="1000" required></textarea>
+          <p>Maximaal 1.000 tekens. Iedereen met de winkelpopup open ziet het bericht maximaal 5 seconden.</p>
+          <button type="submit">Announcement verzenden</button>
+        </form>
+        <p class="owner-status" id="announcement-status" role="status" aria-live="polite"></p>
+        <h3>Secret shop</h3>
+        <button id="secret-shop-toggle" type="button">Secret shop spawnen</button>
+        <form class="owner-form" id="secret-item-form">
+          <label for="secret-item-name">Naam</label>
+          <input id="secret-item-name" type="text" minlength="2" maxlength="40" required>
+          <label for="secret-item-description">Beschrijving</label>
+          <input id="secret-item-description" type="text" minlength="2" maxlength="120" required>
+          <label for="secret-item-emoji">Emoji/badge</label>
+          <input id="secret-item-emoji" type="text" maxlength="8" value="✨" required>
+          <label for="secret-item-price">Prijs (coins)</label>
+          <input id="secret-item-price" type="number" min="1" max="1000000000" required>
+          <label for="secret-item-effect">Effect</label>
+          <select id="secret-item-effect">
+            <option value="cosmetic">Cosmetic collectible</option>
+            <option value="coin_bonus">Bonuscoins per punt</option>
+            <option value="shop_discount">Extra winkelkorting</option>
+          </select>
+          <div class="secret-effect-fields" id="secret-effect-fields" hidden>
+            <label for="secret-effect-percent">Effect (%)</label>
+            <input id="secret-effect-percent" type="number" min="1" max="100" value="10">
+            <label for="secret-effect-duration">Effectduur (minuten)</label>
+            <input id="secret-effect-duration" type="number" min="1" max="1440" value="30">
+          </div>
+          <button type="submit">Item aanmaken</button>
+        </form>
+        <p class="owner-status" id="secret-owner-status" role="status" aria-live="polite"></p>
+        <ol class="leaderboard-list" id="owner-secret-item-list" aria-label="Secret-shopitems beheren"></ol>
+        <p>Wijzig de nickname of coinstand van een speler.</p>
+        <p class="owner-status" id="owner-status" role="status" aria-live="polite"></p>
+        <ol class="leaderboard-list" id="owner-player-list" aria-label="Spelers beheren"></ol>
+      </div>
+    </div>
+  </section>
+  <div class="events-widget" id="events-widget">
+    <button class="events-trigger" id="events-trigger" type="button" aria-label="Events bekijken" aria-controls="events-panel" aria-expanded="false">⚡</button>
+    <section class="events-panel" id="events-panel" aria-label="Winkel-events">
+      <h2>Events</h2>
+      <ol class="events-list" id="events-list"></ol>
+    </section>
+  </div>
+  <script src="supabase-config.js"></script>
+  <script src="skins.js"></script>
+  <script src="store.js"></script>
+</body>
+</html>

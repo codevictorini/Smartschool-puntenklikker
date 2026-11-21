@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PuntKlik - Instellingen</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      --paper: #fff7e9;
+      --ink: #382b21;
+      --accent: #a5553c;
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 28px 22px;
+      background: var(--paper);
+      color: var(--ink);
+      font: 15px/1.5 "Trebuchet MS", system-ui, sans-serif;
+    }
+    header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+    header img { width: 54px; height: 54px; }
+    h1 { margin: 0; font-size: 25px; }
+    h2 { margin: 0 0 8px; font-size: 18px; }
+    p { margin: 4px 0 0; }
+    .panel {
+      margin: 14px 0;
+      padding: 18px;
+      border: 1px solid #d5bd9e;
+      border-radius: 14px;
+      background: rgb(255 255 255 / 64%);
+    }
+    .field { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+    input[type="number"] {
+      width: 90px;
+      padding: 8px 10px;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      background: white;
+      color: var(--ink);
+      font: inherit;
+    }
+    button, .store-link {
+      display: inline-block;
+      padding: 9px 13px;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--ink);
+      font: 700 14px "Trebuchet MS", sans-serif;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    button:hover:not(:disabled), .store-link:hover { background: #fff; }
+    button:disabled { cursor: default; opacity: .6; }
+    .switch-line { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+    input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+    .hint, #status { color: var(--accent); }
+    #status { min-height: 22px; margin: 12px 0; }
+    .reset.confirm { background: var(--accent); color: var(--paper); }
+    footer { display: flex; align-items: center; gap: 14px; margin-top: 20px; }
+    @media (max-width: 460px) {
+      body { padding: 18px 14px; }
+      .field { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo.svg" alt="">
+    <div>
+      <h1>Instellingen</h1>
+      <p>PuntKlik aanpassen</p>
+    </div>
+  </header>
+  <section class="panel">
+    <h2>Puntenspin</h2>
+    <p class="hint">Kies hoeveel keer je op de figuur moet tikken voor de spin begint.</p>
+    <form id="click-form">
+      <label class="field" for="clicks">
+        <span>Aantal tikken (1–50)</span>
+        <input id="clicks" type="number" min="1" max="50" step="1" value="12" required>
+      </label>
+      <button id="save-clicks" type="submit">Aantal opslaan</button>
+    </form>
+  </section>
+  <section class="panel">
+    <h2>Extensie</h2>
+    <label class="switch-line">
+      <input id="enabled" type="checkbox">
+      <span>PuntKlik aanzetten</span>
+    </label>
+    <p class="hint">Als PuntKlik uitstaat, blijven Smartschool-punten zichtbaar.</p>
+  </section>
+  <section class="panel">
+    <h2>Punten opnieuw verstoppen</h2>
+    <p class="hint">Dit verstopt eerder getoonde punten opnieuw. Eerder verdiende coins blijven behouden.</p>
+    <button class="reset" id="reset" type="button">Punten opnieuw verstoppen</button>
+  </section>
+  <p id="status" role="status" aria-live="polite"></p>
+  <footer>
+    <a class="store-link" href="store.html">Open de winkel</a>
+    <span id="current-count" class="hint"></span>
+  </footer>
+  <script src="settings.js"></script>
+</body>
+</html>

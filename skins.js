@@ -56,5 +56,22 @@
       <circle cx="80" cy="30" r="10" fill="#db4555" stroke="#9e304b" stroke-width="3"/>
       <path d="M79 20c0-7 5-11 12-11" fill="none" stroke="#39835b" stroke-linecap="round" stroke-width="4"/>`,
   });
+  const toppings = Object.freeze({
+    sprinkles: `
+      <g fill="none" stroke-linecap="round" stroke-width="6">
+        <path d="m52 65 9 5" stroke="#f24869"/><path d="m73 57 8 6" stroke="#f3bd38"/>
+        <path d="m99 62 8-5" stroke="#579bda"/><path d="m62 91 8-5" stroke="#8a5ac1"/>
+        <path d="m87 91 8 5" stroke="#46a978"/><path d="m105 83 7-5" stroke="#f28a36"/>
+      </g>`,
+    chocolate: `
+      <path d="M46 65c10 9 18-8 29 1s15 12 25 3 14-7 18 2M52 91c9 8 16-6 25 1s17 10 25 0 12-6 16 1" fill="none" stroke="#63391f" stroke-linecap="round" stroke-width="8"/>
+      <path d="M46 65c10 9 18-8 29 1s15 12 25 3 14-7 18 2" fill="none" stroke="#a56d42" stroke-linecap="round" stroke-width="2"/>`,
+    gold: `
+      <path d="m57 78 5 11 12 1-9 8 3 12-11-6-10 6 2-12-9-8 12-1Zm48-20 4 8 9 1-7 6 2 9-8-5-8 5 2-9-7-6 9-1Z" fill="#ffd64f" stroke="#b58321" stroke-linejoin="round" stroke-width="3"/>
+      <circle cx="92" cy="111" r="4" fill="#fff1aa"/>`,
+  });
+  const toppingBoosts = Object.freeze({ sprinkles: 10, chocolate: 25, gold: 50 });
   window.PuntKlikFigures = figures;
+  window.PuntKlikToppings = toppings;
+  window.PuntKlikToppingBoosts = toppingBoosts;
 })();
