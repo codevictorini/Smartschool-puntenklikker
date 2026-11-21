@@ -1,0 +1,94 @@
+body {
+  margin: 0;
+  background: #fffaf1;
+  color: #382b21;
+  font: 16px/1.6 "Trebuchet MS", system-ui, sans-serif;
+}
+.wrap { width: min(760px, calc(100% - 32px)); margin: 0 auto; }
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 0;
+  border-bottom: 1px solid #e6d5bd;
+}
+.brand { display: flex; align-items: center; gap: 9px; color: #382b21; text-decoration: none; }
+.brand img { width: 36px; height: 36px; }
+.brand strong { font-size: 19px; }
+.site-toolbar { display: flex; align-items: center; gap: 7px; margin-left: auto; }
+.site-toolbar a {
+  color: #382b21;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.site-toolbar .page-link,
+.site-toolbar .github-link {
+  padding: 6px 8px;
+  border: 1px solid #e6d5bd;
+  border-radius: 8px;
+}
+.site-toolbar .page-link:hover,
+.site-toolbar .github-link:hover { background: #fff; }
+.site-toolbar .github-link { display: inline-flex; align-items: center; gap: 5px; margin-left: 0; }
+.site-toolbar .github-icon { width: 15px; height: 15px; fill: currentColor; }
+.site-toolbar .discord-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 8px;
+  border: 1px solid #e6d5bd;
+  border-radius: 8px;
+  background: transparent;
+  color: #382b21;
+  margin-left: 0;
+}
+.site-toolbar .discord-link:hover { background: #fff; color: #382b21; }
+.site-toolbar .discord-icon { width: 15px; height: 15px; }
+.site-toolbar .discord-link svg { width: 15px; height: 15px; fill: #5865f2; }
+.site-toolbar .discord-link::after { content: "Discord"; }
+.site-toolbar a:focus-visible {
+  outline: 2px dashed #a5553c;
+  outline-offset: 3px;
+}
+.site-toolbar a[aria-current="page"] { background: #fff; }
+main.wrap { padding: 38px 0 52px; }
+main.wrap h1 { margin: 0 0 10px; font-size: clamp(30px, 6vw, 42px); line-height: 1.15; }
+main.wrap h2 { margin: 28px 0 8px; font-size: 21px; }
+main.wrap p { margin: 0 0 14px; }
+input, textarea, button { font: inherit; }
+.form-panel { max-width: 560px; }
+.contact-form { display: grid; gap: 12px; }
+.contact-form label { display: grid; gap: 5px; font-size: 14px; font-weight: 700; }
+.contact-form input, .contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e6d5bd;
+  border-radius: 7px;
+  background: #fffdf8;
+  color: #382b21;
+}
+.contact-form textarea { min-height: 130px; resize: vertical; }
+.contact-form button {
+  justify-self: start;
+  padding: 9px 14px;
+  border: 0;
+  border-radius: 7px;
+  background: #a5553c;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+.contact-form button:hover { background: #87412e; }
+.contact-form button:focus-visible { outline: 2px dashed #a5553c; outline-offset: 3px; }
+.contact-form button:disabled { cursor: wait; opacity: .7; }
+.contact-honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.contact-status { min-height: 1.6em; color: #705f4d; }
+.site-footer { padding: 18px 0 26px; border-top: 1px solid #e6d5bd; color: #705f4d; font-size: 13px; }
+.site-footer a { color: #a5553c; }
+@media (max-width: 560px) {
+  .site-header { flex-wrap: wrap; }
+  .site-toolbar { width: 100%; justify-content: flex-end; gap: 5px; }
+  .site-toolbar .page-link, .site-toolbar .github-link, .site-toolbar .discord-link { padding: 5px 7px; }
+}
