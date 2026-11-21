@@ -29,7 +29,7 @@ jobs:
             --arg actor "$ACTOR" \
             --arg commit_url "$COMMIT_URL" \
             '{
-              content: ("PuntKlik update gepusht op github\nRepository: " + $repository +
+              content: ("PuntKlik update gepusht\nRepository: " + $repository +
                 "\nBranch: " + $branch + "\nDoor: " + $actor + "\n" + $commit_url),
               allowed_mentions: { parse: [] }
             }')"
