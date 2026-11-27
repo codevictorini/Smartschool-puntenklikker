@@ -33,6 +33,7 @@ jobs:
           REPO: ${{ github.repository }}
           BRANCH: ${{ github.ref_name }}
           ACTOR: ${{ github.actor }}
+          ACTOR_AVATAR: https://github.com/${{ github.actor }}.png?size=128
           AVATAR: ${{ env.GITHUB_AVATAR }}
           COMMIT_MSG: ${{ github.event.head_commit.message }}
           COMMIT_URL: ${{ github.event.head_commit.url }}
@@ -47,10 +48,16 @@ jobs:
             --arg actor "$ACTOR" \
             --arg author "$COMMIT_AUTHOR" \
             --arg avatar "$AVATAR" \
+            --arg actor_avatar "$ACTOR_AVATAR" \
             '{
               username: "GitHub",
               avatar_url: $avatar,
               embeds: [{
+                author: {
+                  name: $author,
+                  icon_url: $actor_avatar,
+                  url: ("https://github.com/" + $actor)
+                },
                 title: $title,
                 url: $url,
                 description: $desc,
@@ -58,7 +65,7 @@ jobs:
                 fields: [
                   { name: "📦 Repository", value: $repo, inline: true },
                   { name: "🌿 Branch", value: ("`" + $branch + "`"), inline: true },
-                  { name: "👤 Auteur", value: $author, inline: true }
+                  { name: "👤 Auteur", value: $actor, inline: true }
                 ],
                 footer: { text: "Push door " + $actor },
                 timestamp: (now | todate)
@@ -79,6 +86,7 @@ jobs:
           HEAD_REF: ${{ github.event.pull_request.head.ref }}
           BASE_REF: ${{ github.event.pull_request.base.ref }}
           ACTOR: ${{ github.actor }}
+          ACTOR_AVATAR: https://github.com/${{ github.actor }}.png?size=128
           AVATAR: ${{ env.GITHUB_AVATAR }}
         run: |
           if [ "$ACTION" = "closed" ] && [ "$MERGED" = "true" ]; then
@@ -105,11 +113,17 @@ jobs:
             --arg base "$BASE_REF" \
             --arg actor "$ACTOR" \
             --arg avatar "$AVATAR" \
+            --arg actor_avatar "$ACTOR_AVATAR" \
             --argjson color "$COLOR" \
             '{
               username: "GitHub",
               avatar_url: $avatar,
               embeds: [{
+                author: {
+                  name: $actor,
+                  icon_url: $actor_avatar,
+                  url: ("https://github.com/" + $actor)
+                },
                 title: $title,
                 url: $url,
                 description: $desc,
@@ -136,6 +150,7 @@ jobs:
           URL: ${{ github.event.release.html_url }}
           BODY: ${{ github.event.release.body }}
           ACTOR: ${{ github.actor }}
+          ACTOR_AVATAR: https://github.com/${{ github.actor }}.png?size=128
           AVATAR: ${{ env.GITHUB_AVATAR }}
         run: |
           SHORT_BODY=$(echo "$BODY" | head -c 500)
@@ -148,10 +163,16 @@ jobs:
             --arg actor "$ACTOR" \
             --arg body "$SHORT_BODY" \
             --arg avatar "$AVATAR" \
+            --arg actor_avatar "$ACTOR_AVATAR" \
             '{
               username: "GitHub",
               avatar_url: $avatar,
               embeds: [{
+                author: {
+                  name: $actor,
+                  icon_url: $actor_avatar,
+                  url: ("https://github.com/" + $actor)
+                },
                 title: $title,
                 url: $url,
                 description: $desc,
@@ -178,6 +199,7 @@ jobs:
           URL: ${{ github.event.issue.html_url }}
           NUM: ${{ github.event.issue.number }}
           ACTOR: ${{ github.actor }}
+          ACTOR_AVATAR: https://github.com/${{ github.actor }}.png?size=128
           AVATAR: ${{ env.GITHUB_AVATAR }}
         run: |
           if [ "$ACTION" = "opened" ]; then
@@ -196,11 +218,17 @@ jobs:
             --arg num "#$NUM" \
             --arg actor "$ACTOR" \
             --arg avatar "$AVATAR" \
+            --arg actor_avatar "$ACTOR_AVATAR" \
             --argjson color "$COLOR" \
             '{
               username: "GitHub",
               avatar_url: $avatar,
               embeds: [{
+                author: {
+                  name: $actor,
+                  icon_url: $actor_avatar,
+                  url: ("https://github.com/" + $actor)
+                },
                 title: $title,
                 url: $url,
                 description: $desc,
