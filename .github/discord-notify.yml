@@ -1,41 +1,220 @@
-name: Discord push notification
+name: Discord Notify
 
 on:
   push:
+    branches: [main, master, develop]
+  pull_request:
+    types: [opened, closed, reopened]
+  release:
+    types: [published]
+  issues:
+    types: [opened, closed, reopened]
+  workflow_dispatch:
 
-permissions: {}
+permissions:
+  contents: read
 
 jobs:
   notify:
-    if: github.event.deleted != true
+    name: Send Discord Embed
     runs-on: ubuntu-latest
+    if: >
+      github.event_name != 'pull_request' ||
+      github.event.action != 'closed' ||
+      github.event.pull_request.merged == true
+
     steps:
-      - name: Send push notification
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push embed
+        if: github.event_name == 'push'
         env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          REPOSITORY: ${{ github.repository }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          REPO: ${{ github.repository }}
           BRANCH: ${{ github.ref_name }}
           ACTOR: ${{ github.actor }}
-          COMMIT_URL: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+          AVATAR: ${{ github.event.sender.avatar_url }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+          COMMIT_AUTHOR: ${{ github.event.head_commit.author.name }}
         run: |
-          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
-            echo "::error::Set the DISCORD_WEBHOOK_URL repository secret."
-            exit 1
-          fi
-
-          payload="$(jq -n \
-            --arg repository "$REPOSITORY" \
+          jq -n \
+            --arg title "🚀 Nieuwe push naar \`$BRANCH\`" \
+            --arg desc "$COMMIT_MSG" \
+            --arg url "$COMMIT_URL" \
+            --arg repo "$REPO" \
             --arg branch "$BRANCH" \
             --arg actor "$ACTOR" \
-            --arg commit_url "$COMMIT_URL" \
+            --arg author "$COMMIT_AUTHOR" \
+            --arg avatar "$AVATAR" \
             '{
-              content: ("PuntKlik update gepusht\nRepository: " + $repository +
-                "\nBranch: " + $branch + "\nDoor: " + $actor + "\n" + $commit_url),
-              allowed_mentions: { parse: [] }
-            }')"
+              username: "GitHub",
+              avatar_url: $avatar,
+              embeds: [{
+                title: $title,
+                url: $url,
+                description: $desc,
+                color: 5793266,
+                fields: [
+                  { name: "📦 Repository", value: $repo, inline: true },
+                  { name: "🌿 Branch", value: ("`" + $branch + "`"), inline: true },
+                  { name: "👤 Auteur", value: $author, inline: true }
+                ],
+                footer: { text: "Push door " + $actor },
+                timestamp: (now | todate)
+              }]
+            }' > payload.json
+          curl -sS -H "Content-Type: application/json" -d @payload.json "$DISCORD_WEBHOOK"
 
-          curl --fail --silent --show-error \
-            --retry 3 --retry-all-errors --max-time 20 \
-            --header "Content-Type: application/json" \
-            --data "$payload" \
-            "$DISCORD_WEBHOOK_URL"
+      - name: Pull request embed
+        if: github.event_name == 'pull_request'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          REPO: ${{ github.repository }}
+          ACTION: ${{ github.event.action }}
+          MERGED: ${{ github.event.pull_request.merged }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_NUM: ${{ github.event.pull_request.number }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          ACTOR: ${{ github.actor }}
+          AVATAR: ${{ github.event.sender.avatar_url }}
+        run: |
+          if [ "$ACTION" = "closed" ] && [ "$MERGED" = "true" ]; then
+            TITLE="✅ Pull Request merged"
+            COLOR=3066993
+          elif [ "$ACTION" = "closed" ]; then
+            TITLE="❌ Pull Request gesloten"
+            COLOR=15158332
+          elif [ "$ACTION" = "opened" ]; then
+            TITLE="🔀 Pull Request geopend"
+            COLOR=15844367
+          else
+            TITLE="🔁 Pull Request $ACTION"
+            COLOR=15844367
+          fi
+
+          jq -n \
+            --arg title "$TITLE" \
+            --arg desc "$PR_TITLE" \
+            --arg url "$PR_URL" \
+            --arg repo "$REPO" \
+            --arg num "#$PR_NUM" \
+            --arg head "$HEAD_REF" \
+            --arg base "$BASE_REF" \
+            --arg actor "$ACTOR" \
+            --arg avatar "$AVATAR" \
+            --argjson color "$COLOR" \
+            '{
+              username: "GitHub",
+              avatar_url: $avatar,
+              embeds: [{
+                title: $title,
+                url: $url,
+                description: $desc,
+                color: $color,
+                fields: [
+                  { name: "📦 Repository", value: $repo, inline: true },
+                  { name: "#️⃣ Nummer", value: $num, inline: true },
+                  { name: "👤 Auteur", value: $actor, inline: true },
+                  { name: "🌿 Branches", value: ("`" + $head + "` → `" + $base + "`"), inline: false }
+                ],
+                footer: { text: "Pull Request" },
+                timestamp: (now | todate)
+              }]
+            }' > payload.json
+          curl -sS -H "Content-Type: application/json" -d @payload.json "$DISCORD_WEBHOOK"
+
+      - name: Release embed
+        if: github.event_name == 'release'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          REPO: ${{ github.repository }}
+          TAG: ${{ github.event.release.tag_name }}
+          NAME: ${{ github.event.release.name }}
+          URL: ${{ github.event.release.html_url }}
+          BODY: ${{ github.event.release.body }}
+          ACTOR: ${{ github.actor }}
+          AVATAR: ${{ github.event.sender.avatar_url }}
+        run: |
+          SHORT_BODY=$(echo "$BODY" | head -c 500)
+          jq -n \
+            --arg title "🎉 Release $TAG" \
+            --arg desc "$NAME" \
+            --arg url "$URL" \
+            --arg repo "$REPO" \
+            --arg tag "$TAG" \
+            --arg actor "$ACTOR" \
+            --arg body "$SHORT_BODY" \
+            --arg avatar "$AVATAR" \
+            '{
+              username: "GitHub",
+              avatar_url: $avatar,
+              embeds: [{
+                title: $title,
+                url: $url,
+                description: $desc,
+                color: 3066993,
+                fields: [
+                  { name: "📦 Repository", value: $repo, inline: true },
+                  { name: "🏷️ Tag", value: ("`" + $tag + "`"), inline: true },
+                  { name: "👤 Auteur", value: $actor, inline: true },
+                  { name: "📝 Release notes", value: (if $body == "" then "_geen notes_" else $body end), inline: false }
+                ],
+                footer: { text: "Release" },
+                timestamp: (now | todate)
+              }]
+            }' > payload.json
+          curl -sS -H "Content-Type: application/json" -d @payload.json "$DISCORD_WEBHOOK"
+
+      - name: Issue embed
+        if: github.event_name == 'issues'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          REPO: ${{ github.repository }}
+          ACTION: ${{ github.event.action }}
+          TITLE_ISSUE: ${{ github.event.issue.title }}
+          URL: ${{ github.event.issue.html_url }}
+          NUM: ${{ github.event.issue.number }}
+          ACTOR: ${{ github.actor }}
+          AVATAR: ${{ github.event.sender.avatar_url }}
+        run: |
+          if [ "$ACTION" = "opened" ]; then
+            TITLE="🐛 Issue geopend"; COLOR=15158332
+          elif [ "$ACTION" = "closed" ]; then
+            TITLE="✅ Issue gesloten"; COLOR=3066993
+          else
+            TITLE="🔁 Issue $ACTION"; COLOR=15158332
+          fi
+
+          jq -n \
+            --arg title "$TITLE" \
+            --arg desc "$TITLE_ISSUE" \
+            --arg url "$URL" \
+            --arg repo "$REPO" \
+            --arg num "#$NUM" \
+            --arg actor "$ACTOR" \
+            --arg avatar "$AVATAR" \
+            --argjson color "$COLOR" \
+            '{
+              username: "GitHub",
+              avatar_url: $avatar,
+              embeds: [{
+                title: $title,
+                url: $url,
+                description: $desc,
+                color: $color,
+                fields: [
+                  { name: "📦 Repository", value: $repo, inline: true },
+                  { name: "#️⃣ Nummer", value: $num, inline: true },
+                  { name: "👤 Auteur", value: $actor, inline: true }
+                ],
+                footer: { text: "Issue" },
+                timestamp: (now | todate)
+              }]
+            }' > payload.json
+          curl -sS -H "Content-Type: application/json" -d @payload.json "$DISCORD_WEBHOOK"
